@@ -11,6 +11,8 @@
   const links = [
     ["index.html", "Label", "home"],
     ["crew.html", "Crew", "crew"],
+    ["shop.html", "Shop", "shop"],
+    ["design.html", "Design Room", "design"],
     ["process.html", "Process", "process"],
     ["consult.html", "Consult", "consult"],
   ];
@@ -47,7 +49,7 @@
       <div class="ftr-grid">
         <div><b>C Works Label</b>동대문 업력 20년 이상 디자이너들의 프로모션 레이블.<br>스타일당 ${C.minQty}장 이상 · 총 ${won(C.minBudget / 10000)}만원 이상 제작.</div>
         <div><b>Contact</b><a href="${tel}">${C.phone}</a><br><a href="mailto:${C.email}">${C.email}</a>${C.kakao ? `<br><a href="${C.kakao}" target="_blank" rel="noopener">카카오톡 채널</a>` : ""}</div>
-        <div><b>Hours</b>${C.hours}</div>
+        <div><b>Hours</b>${C.hours}<br><br><b>More</b><a href="shop.html">Shop — 디렉터 편집숍</a><br><a href="design.html">Design Room — 사업자 전용</a></div>
         <div><b>Studio</b>${C.address}</div>
       </div>
       <p class="copy">${C.bizInfo}<br>© ${new Date().getFullYear()} ${C.brand}. All rights reserved.</p>

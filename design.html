@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design Room — C WORKS LABEL</title>
+<meta name="description" content="20년차 디렉터의 디자인을 구매하는 공간. 사업자 등록 업체만 승인 후 입장할 수 있습니다.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="design">
+
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow fade d1">Design Room · For verified businesses only</p>
+    <h1 class="display fade d2" style="margin-top:20px;font-size:clamp(44px,7vw,104px)">Designs are not<br>for everyone.</h1>
+    <p class="lead fade d3" style="margin-top:32px">20년차 현역 디렉터의 디자인을 사서, 당신 브랜드의 상품으로 만드는 공간입니다. 디자인은 한 번 보면 베낄 수 있기 때문에, <span style="color:var(--white)">사업자 등록을 확인하고 승인한 프리미엄 거래 업체만</span> 디자인을 보고 구매할 수 있습니다.</p>
+    <div class="btns fade d3" style="margin-top:36px">
+      <a class="btn" href="#apply">프리미엄 거래 업체 신청 <span class="arr">→</span></a>
+      <a class="btn ghost" href="#login">승인 업체 로그인</a>
+    </div>
+  </div>
+</section>
+
+<!-- 디자인 목록 (비회원: 잠금) -->
+<section style="padding-top:40px">
+  <div class="wrap">
+    <div id="pvFlag"></div>
+    <div class="sec-head rv">
+      <div><p class="eyebrow">Inside the room</p></div>
+      <h2 class="h2" id="roomTitle">승인된 업체에게만<br>열리는 디자인.</h2>
+    </div>
+    <div class="filters" id="filters" style="display:none"></div>
+    <div class="lock-grid rv" id="grid"></div>
+  </div>
+</section>
+
+<!-- 무엇을 사는가 -->
+<section>
+  <div class="wrap grid-2">
+    <div class="rv">
+      <p class="eyebrow">What you get</p>
+      <h2 class="h2" style="margin-top:20px">그림 한 장이 아니라,<br>바로 만들 수 있는 디자인.</h2>
+      <p class="lead" style="margin-top:24px">디자인 1건에는 공장에 그대로 넘길 수 있는 자료가 함께 들어 있습니다. 디자이너가 없는 쇼핑몰·신규 브랜드도 20년차의 설계로 바로 생산을 시작할 수 있습니다.</p>
+    </div>
+    <div class="rows rv" id="includes"></div>
+  </div>
+</section>
+
+<!-- 판매 방식 -->
+<section>
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="eyebrow">License</p></div>
+      <h2 class="h2">비독점과 독점,<br>두 가지로 판매합니다.</h2>
+    </div>
+    <div class="tbl-wrap rv">
+      <table class="tbl" id="license"></table>
+    </div>
+    <p class="lead rv" style="margin-top:36px" id="linkNote"></p>
+    <div class="rows rv" style="margin-top:40px">
+      <div class="row"><span class="n">—</span><span class="h3">미리보기는 워터마크</span><p>결제 전에는 워터마크가 들어간 미리보기만 보여드립니다. 작업지시서·도식화 원본은 결제 후 제공합니다.</p></div>
+      <div class="row"><span class="n">—</span><span class="h3">구매한 것은 사용권</span><p>구매한 디자인으로 제작·판매할 수 있습니다. 디자인 자료를 다른 곳에 되팔거나 공유할 수 없습니다.</p></div>
+      <div class="row"><span class="n">—</span><span class="h3">업체 정보 기록</span><p>제공되는 자료에는 구매 업체의 상호와 사업자번호가 함께 기록됩니다.</p></div>
+      <div class="row"><span class="n">—</span><span class="h3">환불 기준</span><p>자료를 받은 뒤에는 환불되지 않습니다. 파일에 오류가 있으면 수정본을 드립니다.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 가입 절차 + 신청 -->
+<section id="apply">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div><p class="eyebrow">Membership</p></div>
+      <h2 class="h2">프리미엄 거래 업체는<br>사업자 등록 업체만 받습니다.</h2>
+    </div>
+    <div class="flow rv">
+      <div><span class="n">01</span><p class="h3">신청</p><p>사업자 정보와 판매 채널을 적어 신청합니다.</p></div>
+      <div><span class="n">02</span><p class="h3">사업자 확인</p><p>국세청 조회로 정상 영업 중인 사업자인지 확인합니다.</p></div>
+      <div><span class="n">03</span><p class="h3" id="approverStep">대표 승인</p><p>대표가 직접 검토하고 승인합니다. 휴·폐업 사업자와 개인은 받지 않습니다.</p></div>
+      <div><span class="n">04</span><p class="h3">입장</p><p>승인 후 로그인하면 디자인을 보고 구매할 수 있습니다.</p></div>
+    </div>
+
+    <div class="grid-2" style="margin-top:clamp(56px,7vw,96px)">
+      <div class="rv">
+        <div class="notice" style="margin:0">
+          <p class="eyebrow">Before you apply</p>
+          <p class="lead-in" style="margin-top:14px">구경만 하실 분은<br><span class="muted">신청하지 않으셔도 됩니다.</span></p>
+          <ol>
+            <li>사업자등록증이 있는 업체만 신청할 수 있습니다. 개인·비사업자는 승인하지 않습니다.</li>
+            <li>운영 중인 쇼핑몰·브랜드 주소를 꼭 적어 주세요. 판매 채널이 확인되지 않으면 승인이 늦어집니다.</li>
+            <li>사업자등록증 사본은 신청 후 회신 메일로 받습니다.</li>
+            <li>승인은 영업일 기준 2~3일이 걸립니다.</li>
+          </ol>
+        </div>
+        <div class="notice" id="login" style="margin-top:24px">
+          <p class="eyebrow">Member login</p>
+          <p class="muted small" style="margin-top:12px">승인 업체 로그인은 정식 오픈과 함께 열립니다. 이미 승인 안내를 받으셨다면 오픈 시 메일로 접속 방법을 보내드립니다.</p>
+        </div>
+      </div>
+
+      <form class="form rv" id="f" novalidate>
+        <div class="f2">
+          <div class="fld"><label>상호 <span class="req">*</span></label><input name="company" required></div>
+          <div class="fld"><label>대표자 <span class="req">*</span></label><input name="ceo" required></div>
+        </div>
+        <div class="fld"><label>사업자등록번호 <span class="req">*</span></label>
+          <input name="biz" id="biz" inputmode="numeric" placeholder="000-00-00000" maxlength="12" required>
+          <span class="hint" id="bizHint">숫자 10자리. 형식이 맞는지 바로 확인합니다.</span></div>
+        <div class="f2">
+          <div class="fld"><label>업태 / 종목</label><input name="kind" placeholder="예: 소매 / 의류"></div>
+          <div class="fld"><label>판매 채널 주소 <span class="req">*</span></label><input name="url" placeholder="쇼핑몰·인스타·스토어 주소" required></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>담당자 <span class="req">*</span></label><input name="name" required></div>
+          <div class="fld"><label>연락처 <span class="req">*</span></label><input name="phone" inputmode="tel" required></div>
+        </div>
+        <div class="fld"><label>이메일 <span class="req">*</span></label><input name="email" type="email" required></div>
+        <div class="fld"><label>관심 종목</label><div class="opts" id="catOpts"></div></div>
+        <label class="check"><input type="checkbox" name="a1" required> 구매한 디자인 자료를 다른 곳에 되팔거나 공유하지 않는 데 동의합니다.</label>
+        <label class="check"><input type="checkbox" name="a2" required> 승인 심사를 위한 사업자 정보 수집·이용에 동의합니다.</label>
+        <div class="gate" id="gate"></div>
+        <div><button class="btn" type="submit">신청서 보내기 <span class="arr">→</span></button></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+  const D = DESIGN_INFO, U = CWU;
+  const crewOf = id => CREW.find(c => c.id === id) || {};
+  const catOf = id => CATS.find(c => c.id === id) || {};
+  // #preview : 승인 업체 화면 미리보기 (예시 데이터일 때만 사용)
+  const preview = location.hash === "#preview";
+
+  document.getElementById("approverStep").textContent = D.approver + " 승인";
+  document.getElementById("includes").innerHTML = D.includes.map((t, i) =>
+    `<div class="row"><span class="n">0${i + 1}</span><span class="h3" style="grid-column:span 2">${t}</span></div>`).join("");
+  document.getElementById("license").innerHTML = `<tr><th></th>${D.license.map(l => `<th>${l.k}</th>`).join("")}</tr>
+    <tr><td>판매 방식</td>${D.license.map(l => `<td>${l.d}</td>`).join("")}</tr>
+    <tr><td>가격대</td>${D.license.map(l => `<td class="us">${l.price}</td>`).join("")}</tr>`;
+  document.getElementById("linkNote").textContent = D.link;
+  document.getElementById("catOpts").innerHTML = CATS.map(c =>
+    `<input type="checkbox" id="k_${c.id}" name="cats" value="${c.ko}"><label for="k_${c.id}">${c.ko}</label>`).join("");
+
+  // 디자인 목록
+  const grid = document.getElementById("grid");
+  let cur = "all";
+  function render() {
+    const list = DESIGNS.filter(d => cur === "all" || d.cat === cur);
+    grid.innerHTML = list.map(d => `
+      <div class="dz ${preview ? "" : "locked"}">
+        <span class="lk">${preview ? d.type : "LOCKED"}</span>
+        <div class="ph-img">Design</div>
+        ${preview ? `<span class="wm">C WORKS · Preview</span>` : ""}
+        <div class="meta"><p class="eyebrow">${catOf(d.cat).en} · ${d.season}</p>
+          <p class="t">${d.title}</p>
+          <p class="muted small">${crewOf(d.crew).name}${preview ? ` · ${d.type} · 가격은 승인 업체에게만 공개` : ""}</p></div>
+      </div>`).join("") + (preview ? "" : `
+      <div class="lock-over"><div>
+        <p class="serif">사업자 승인 후<br>열람할 수 있습니다.</p>
+        <div class="btns" style="justify-content:center;margin-top:24px">
+          <a class="btn" href="#apply">프리미엄 거래 업체 신청 <span class="arr">→</span></a></div>
+      </div></div>`);
+  }
+  if (preview) {
+    document.getElementById("pvFlag").innerHTML = `<p class="preview-flag">미리보기 화면입니다 — 정식 오픈 후에는 승인된 업체가 로그인했을 때만 이 화면이 보입니다.</p>`;
+    document.getElementById("roomTitle").innerHTML = "이번 시즌<br>디렉터 디자인.";
+    const fl = document.getElementById("filters");
+    fl.style.display = "";
+    fl.innerHTML = [["all", "전체"], ...CATS.map(c => [c.id, c.ko])]
+      .map(([id, t]) => `<button class="chip ${id === "all" ? "on" : ""}" data-f="${id}">${t}</button>`).join("");
+    fl.onclick = e => { const b = e.target.closest(".chip"); if (!b) return; cur = b.dataset.f;
+      fl.querySelectorAll(".chip").forEach(x => x.classList.toggle("on", x === b)); render(); };
+  }
+  render();
+
+  // 사업자등록번호 형식·검증번호 확인 (진위 여부는 승인 단계에서 국세청 조회)
+  const biz = document.getElementById("biz"), bizHint = document.getElementById("bizHint");
+  const bizOk = v => {
+    const d = v.replace(/\D/g, ""); if (d.length !== 10) return false;
+    const w = [1, 3, 7, 1, 3, 7, 1, 3, 5], n = d.split("").map(Number);
+    let s = w.reduce((a, x, i) => a + x * n[i], 0) + Math.floor(n[8] * 5 / 10);
+    return (10 - s % 10) % 10 === n[9];
+  };
+  biz.addEventListener("input", () => {
+    const d = biz.value.replace(/\D/g, "").slice(0, 10);
+    biz.value = d.length > 5 ? `${d.slice(0, 3)}-${d.slice(3, 5)}-${d.slice(5)}` : d.length > 3 ? `${d.slice(0, 3)}-${d.slice(3)}` : d;
+    bizHint.textContent = d.length < 10 ? "숫자 10자리. 형식이 맞는지 바로 확인합니다."
+      : bizOk(d) ? "형식이 올바른 번호입니다. 실제 영업 여부는 승인 단계에서 확인합니다." : "올바르지 않은 사업자등록번호입니다. 다시 확인해 주세요.";
+    bizHint.style.color = d.length === 10 && !bizOk(d) ? "#d9bdb6" : "";
+  });
+
+  // 신청 → 메일 (실접수 시스템 연결 전)
+  const f = document.getElementById("f"), gate = document.getElementById("gate");
+  f.onsubmit = e => {
+    e.preventDefault();
+    const fd = new FormData(f), g = k => (fd.get(k) || "").trim();
+    const miss = [...f.querySelectorAll("[required]")].some(el => el.type === "checkbox" ? !el.checked : !el.value.trim());
+    let msg = miss ? "필수 항목(*)과 동의 항목을 모두 채워 주세요." : !bizOk(g("biz")) ? "사업자등록번호를 다시 확인해 주세요. 사업자 등록 업체만 신청할 수 있습니다." : "";
+    gate.className = "gate show " + (msg ? "no" : "ok");
+    if (msg) { gate.textContent = msg; return; }
+    const body = [
+      "[프리미엄 거래 업체 신청]",
+      `상호: ${g("company")}`, `대표자: ${g("ceo")}`, `사업자등록번호: ${g("biz")}`, `업태/종목: ${g("kind")}`,
+      `판매 채널: ${g("url")}`, `담당자: ${g("name")} / ${g("phone")} / ${g("email")}`,
+      `관심 종목: ${fd.getAll("cats").join(", ") || "-"}`, "",
+      "※ 사업자등록증 사본은 회신 메일에 첨부해 주세요.",
+    ].join("\n");
+    location.href = `mailto:${CW.email}?subject=${encodeURIComponent("[Design Room 신청] " + g("company"))}&body=${encodeURIComponent(body)}`;
+    gate.textContent = "메일 앱이 열리면 그대로 보내 주세요. 사업자 확인 후 영업일 2~3일 안에 승인 결과를 알려드립니다.";
+  };
+</script>
+</body>
+</html>

@@ -82,7 +82,7 @@
     <div id="done" style="display:none">
       <p class="eyebrow">Received</p>
       <h2 class="h2" style="margin:16px 0 24px">상담 신청서가 준비되었습니다.</h2>
-      <p class="lead">메일 앱이 열리면 그대로 전송해 주세요. 내용을 검토한 뒤, 제작이 가능한 프로젝트에 한해 담당 디렉터가 영업일 2~3일 안에 개별 연락드립니다. 도식화·레퍼런스 사진은 카카오톡으로 보내주세요.</p>
+      <p class="lead">메일 앱이 열리면 그대로 전송해 주세요. 대표가 먼저 내용을 검토하고, 제작이 가능한 프로젝트에 한해 영업일 2~3일 안에 1차 상담 연락을 드립니다. 이후 담당 디렉터가 본 상담을 이어갑니다. 도식화·레퍼런스 사진은 카카오톡으로 보내주세요.</p>
       <pre id="summary" style="margin-top:32px;border:1px solid var(--line);padding:24px;white-space:pre-wrap;font:300 13px/1.8 var(--sans);color:var(--gray-4)"></pre>
       <div class="btns" style="margin-top:28px"><a class="btn" id="mailBtn">메일로 다시 보내기</a><a class="btn ghost js-tel" href="#">전화 연결</a><span class="js-kakao" data-label="카톡으로 자료 보내기"></span></div>
     </div>
@@ -119,8 +119,8 @@
   // 상담 전 안내 (꼭 필요한 분만)
   document.getElementById("noticeList").innerHTML = [
     `스타일당 ${C.minQty}장 미만, 총 제작 예산 ${man(C.minBudget)} 미만 프로젝트는 문의를 받지 않습니다.`,
+    "모든 신규 문의는 업력 20년의 대표가 먼저 1차 상담합니다. 진행이 가능한 프로젝트만 담당 디렉터에게 연결됩니다.",
     "디렉터 전원이 현역 실장으로 생산을 진행 중이라, 답변은 영업일 기준 2~3일이 걸립니다.",
-    "모든 문의를 검토하지만, 제작이 가능한 프로젝트에 한해 담당 디렉터가 개별 연락드립니다.",
     "도식화·레퍼런스·목표 판매가 없이 \"가격만\" 묻는 문의에는 답변드리기 어렵습니다.",
     `상담이 확정되면 예약금 ${man(C.depositFee)}이 있으며, 계약 시 제작비에서 전액 차감됩니다.`,
   ].map(t => `<li>${t}</li>`).join("");
