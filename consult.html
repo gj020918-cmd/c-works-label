@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consult — C WORKS LABEL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="consult">
+
+<section class="phero">
+  <div class="wrap grid-2">
+    <div>
+      <p class="eyebrow fade d1">Consultation</p>
+      <h1 class="display fade d2" style="margin-top:20px;font-size:clamp(44px,6.4vw,96px)">Tell us<br>what you<br>want to make.</h1>
+    </div>
+    <div class="fade d3" style="align-self:end">
+      <p class="lead">종목을 선택하면 해당 분야 디렉터에게 바로 전달됩니다. 접수 기준을 먼저 확인해 주세요.</p>
+      <p class="muted small" style="margin-top:12px">도식화·레퍼런스 사진은 신청 후 카카오톡으로 보내주시면 됩니다.</p>
+      <div class="rows" style="margin-top:28px" id="rules"></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:40px">
+  <div class="wrap" style="max-width:880px">
+    <div class="notice">
+      <p class="eyebrow">Before you write</p>
+      <p class="lead-in" style="margin-top:14px">C WORKS LABEL은 모든 문의에 답하지 않습니다.<br><span class="muted">꼭 필요한 분만 신청해 주세요.</span></p>
+      <ol id="noticeList"></ol>
+    </div>
+    <div class="steps-bar" id="bar"><span class="on"></span><span></span><span></span></div>
+
+    <form class="form" id="f" novalidate>
+      <!-- STEP 1: 자격 확인 -->
+      <div class="step on" data-s="1">
+        <p class="eyebrow">Step 01 — 제작 규모 확인</p>
+        <div class="fld"><label>제작 종목 <span class="req">*</span></label><div class="opts" id="catOpts"></div></div>
+        <div class="fld"><label>담당 디렉터 지정 (선택)</label><select name="crew" id="crewSel"><option value="">종목 전문가 자동 배정</option></select></div>
+        <div class="f2">
+          <div class="fld"><label>스타일당 제작 수량 <span class="req">*</span></label>
+            <input name="qty" type="number" inputmode="numeric" min="0" placeholder="예: 300"><span class="hint" id="qtyHint"></span></div>
+          <div class="fld"><label>스타일 수 <span class="req">*</span></label>
+            <input name="styles" type="number" inputmode="numeric" min="1" value="1"></div>
+        </div>
+        <div class="fld"><label>총 제작 예산 <span class="req">*</span></label><div class="opts" id="budOpts"></div></div>
+        <div class="gate" id="gate"></div>
+        <div class="btns"><button type="button" class="btn" id="next1">다음 단계 <span class="arr">→</span></button></div>
+      </div>
+
+      <!-- STEP 2: 프로젝트 -->
+      <div class="step" data-s="2">
+        <p class="eyebrow">Step 02 — 프로젝트 정보</p>
+        <div class="fld"><label>고객 유형 <span class="req">*</span></label><div class="opts" id="typeOpts"></div></div>
+        <div class="f2">
+          <div class="fld"><label>브랜드 / 쇼핑몰명 <span class="req">*</span></label><input name="brand" placeholder="브랜드명"></div>
+          <div class="fld"><label>희망 출고일 <span class="req">*</span></label><input name="due" type="date"><span class="hint" id="dueHint"></span></div>
+        </div>
+        <div class="fld"><label>진행 단계</label><div class="opts" id="stageOpts"></div></div>
+        <div class="fld"><label>알게 된 경로</label><div class="opts" id="srcOpts"></div></div>
+        <div class="fld"><label>제작 내용</label><textarea name="memo" placeholder="아이템, 원하는 소재·핏, 레퍼런스 링크, 목표 판매가 등을 적어주세요."></textarea></div>
+        <div class="btns"><button type="button" class="btn ghost" data-back>← 이전</button><button type="button" class="btn" id="next2">다음 단계 <span class="arr">→</span></button></div>
+      </div>
+
+      <!-- STEP 3: 연락처 -->
+      <div class="step" data-s="3">
+        <p class="eyebrow">Step 03 — 연락처</p>
+        <div class="f2">
+          <div class="fld"><label>담당자명 <span class="req">*</span></label><input name="name"></div>
+          <div class="fld"><label>연락처 <span class="req">*</span></label><input name="phone" type="tel" placeholder="010-0000-0000"></div>
+        </div>
+        <div class="fld"><label>이메일</label><input name="email" type="email"></div>
+        <label class="check"><input type="checkbox" name="agree1">상담 확정 시 예약금 <span id="depTxt"></span>이 있으며, 본 계약 시 제작비에서 차감됨을 확인했습니다.</label>
+        <label class="check"><input type="checkbox" name="agree2">상담 진행을 위한 개인정보(이름·연락처·이메일) 수집·이용에 동의합니다.</label>
+        <div class="gate" id="gate3"></div>
+        <div class="btns"><button type="button" class="btn ghost" data-back>← 이전</button><button type="submit" class="btn">상담 신청 접수 <span class="arr">→</span></button></div>
+      </div>
+    </form>
+
+    <div id="done" style="display:none">
+      <p class="eyebrow">Received</p>
+      <h2 class="h2" style="margin:16px 0 24px">상담 신청서가 준비되었습니다.</h2>
+      <p class="lead">메일 앱이 열리면 그대로 전송해 주세요. 내용을 검토한 뒤, 제작이 가능한 프로젝트에 한해 담당 디렉터가 영업일 2~3일 안에 개별 연락드립니다. 도식화·레퍼런스 사진은 카카오톡으로 보내주세요.</p>
+      <pre id="summary" style="margin-top:32px;border:1px solid var(--line);padding:24px;white-space:pre-wrap;font:300 13px/1.8 var(--sans);color:var(--gray-4)"></pre>
+      <div class="btns" style="margin-top:28px"><a class="btn" id="mailBtn">메일로 다시 보내기</a><a class="btn ghost js-tel" href="#">전화 연결</a><span class="js-kakao" data-label="카톡으로 자료 보내기"></span></div>
+    </div>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+  const C = CW, U = CWU, f = document.getElementById("f");
+  const man = n => U.won(n / 10000) + "만원";
+  const qs = new URLSearchParams(location.search);
+  document.querySelectorAll(".js-tel").forEach(a => a.href = U.tel);
+  document.getElementById("depTxt").textContent = man(C.depositFee);
+
+  const radios = (name, list, sel) => list.map(([v, t], i) =>
+    `<input type="radio" name="${name}" id="${name}${i}" value="${v}" ${v === sel ? "checked" : ""}><label for="${name}${i}">${t}</label>`).join("");
+
+  document.getElementById("rules").innerHTML = [
+    ["수량", `스타일당 ${C.minQty}장 이상`], ["예산", `총 ${man(C.minBudget)} 이상`],
+    ["예약금", `${man(C.depositFee)} (제작비 차감)`], ["결제", `계약금 ${C.pay.deposit}% · 잔금 ${C.pay.balance}%`],
+  ].map(([k, v]) => `<div class="row" style="grid-template-columns:100px 1fr;padding:16px 0"><span class="muted small">${k}</span><span>${v}</span></div>`).join("");
+
+  document.getElementById("catOpts").innerHTML = radios("cat", CATS.map(c => [c.id, c.ko]), qs.get("cat"));
+  const budgets = [
+    [C.minBudget, `${man(C.minBudget)} – 1,000만원`],
+    [10000000, "1,000 – 3,000만원"], [30000000, "3,000만원 – 1억"], [100000000, "1억 이상"],
+  ];
+  document.getElementById("budOpts").innerHTML = radios("budget", budgets.map(([v, t]) => [String(v), t]));
+  document.getElementById("typeOpts").innerHTML = radios("type",
+    [["mall", "개인 쇼핑몰"], ["new", "신규 브랜드"], ["brand", "기존 브랜드"], ["whole", "도소매"], ["etc", "기업·단체"]]);
+  document.getElementById("srcOpts").innerHTML = radios("src",
+    [["insta", "인스타그램"], ["search", "검색"], ["blog", "블로그"], ["ref", "지인·거래처 소개"], ["etc", "기타"]]);
+  // 상담 전 안내 (꼭 필요한 분만)
+  document.getElementById("noticeList").innerHTML = [
+    `스타일당 ${C.minQty}장 미만, 총 제작 예산 ${man(C.minBudget)} 미만 프로젝트는 문의를 받지 않습니다.`,
+    "디렉터 전원이 현역 실장으로 생산을 진행 중이라, 답변은 영업일 기준 2~3일이 걸립니다.",
+    "모든 문의를 검토하지만, 제작이 가능한 프로젝트에 한해 담당 디렉터가 개별 연락드립니다.",
+    "도식화·레퍼런스·목표 판매가 없이 \"가격만\" 묻는 문의에는 답변드리기 어렵습니다.",
+    `상담이 확정되면 예약금 ${man(C.depositFee)}이 있으며, 계약 시 제작비에서 전액 차감됩니다.`,
+  ].map(t => `<li>${t}</li>`).join("");
+  document.getElementById("stageOpts").innerHTML = radios("stage",
+    [["idea", "아이디어만 있음"], ["ref", "레퍼런스 있음"], ["sketch", "도식화·작지 있음"], ["sample", "샘플 있음"], ["reorder", "리오더"]]);
+
+  const crewSel = document.getElementById("crewSel");
+  function fillCrew() {
+    const cat = f.cat.value;
+    crewSel.innerHTML = `<option value="">종목 전문가 자동 배정</option>` +
+      CREW.filter(p => !cat || p.cat === cat).map(p => `<option value="${p.id}">${p.name} · ${CATS.find(c => c.id === p.cat).ko} · ${p.years}년</option>`).join("");
+    if (qs.get("crew")) crewSel.value = qs.get("crew");
+  }
+  fillCrew();
+  document.getElementById("catOpts").onchange = fillCrew;
+
+  // ---- 문의 필터 (게이트) ----
+  const gate = document.getElementById("gate");
+  function check1(show) {
+    const qty = +f.qty.value || 0, bud = f.budget.value, errs = [];
+    if (!f.cat.value) errs.push("제작 종목을 선택해 주세요.");
+    if (!qty) errs.push("스타일당 수량을 입력해 주세요.");
+    else if (qty < C.minQty) errs.push(`C WORKS LABEL은 스타일당 ${C.minQty}장 이상 제작만 진행합니다. (입력 ${qty}장)`);
+    if (bud === "") errs.push("총 제작 예산을 선택해 주세요.");
+    else if (+bud < C.minBudget) errs.push(`총 제작 예산 ${man(C.minBudget)} 이상 프로젝트만 상담합니다.`);
+    document.getElementById("qtyHint").textContent = qty && qty < C.minQty ? `최소 ${C.minQty}장` : "";
+    if (show) {
+      gate.className = "gate show " + (errs.length ? "no" : "ok");
+      const smallOrder = errs.some(e => e.includes("이상"));
+      gate.innerHTML = errs.length
+        ? errs.join("<br>") + (smallOrder ? `<br><br><span class="muted small">소량 제작은 품질과 납기를 보장할 수 없어 정중히 사양하고 있습니다. 수량·예산이 확정되면 다시 문의해 주세요.</span>` : "")
+        : "접수 기준을 충족합니다. 다음 단계로 진행해 주세요.";
+    }
+    return !errs.length;
+  }
+  f.addEventListener("input", () => gate.classList.contains("show") && check1(true));
+
+  // 희망 출고일 → 최소 리드타임 안내
+  const MIN_WEEKS = { knit: 8, women: 7, denim: 8, tee: 5, men: 8, global: 12 };
+  f.due.min = new Date(Date.now() + 864e5 * 14).toISOString().slice(0, 10);
+  f.due.oninput = () => {
+    const w = MIN_WEEKS[f.cat.value] || 7, days = (new Date(f.due.value) - new Date()) / 864e5;
+    document.getElementById("dueHint").textContent = days < w * 7
+      ? `※ ${CATS.find(c => c.id === f.cat.value)?.ko || "해당"} 종목은 보통 ${w}주 이상 소요됩니다. 일정 조율이 필요할 수 있습니다.` : `권장 리드타임(${w}주) 충족`;
+  };
+
+  let step = 1;
+  const go = s => {
+    step = s;
+    document.querySelectorAll(".step").forEach(el => el.classList.toggle("on", +el.dataset.s === s));
+    document.querySelectorAll("#bar span").forEach((b, i) => b.classList.toggle("on", i < s));
+    scrollTo({ top: f.offsetTop - 140, behavior: "smooth" });
+  };
+  document.getElementById("next1").onclick = () => check1(true) && go(2);
+  document.getElementById("next2").onclick = () => {
+    if (!f.type.value || !f.brand.value.trim() || !f.due.value) { alert("고객 유형, 브랜드명, 희망 출고일을 입력해 주세요."); return; }
+    go(3);
+  };
+  document.querySelectorAll("[data-back]").forEach(b => b.onclick = () => go(step - 1));
+
+  f.onsubmit = e => {
+    e.preventDefault();
+    const g3 = document.getElementById("gate3"), errs = [];
+    if (!f.name.value.trim()) errs.push("담당자명을 입력해 주세요.");
+    if (!/^[0-9\-+ ]{9,}$/.test(f.phone.value)) errs.push("연락처를 정확히 입력해 주세요.");
+    if (!f.agree1.checked || !f.agree2.checked) errs.push("확인 항목에 모두 동의해 주세요.");
+    if (errs.length) { g3.className = "gate show no"; g3.innerHTML = errs.join("<br>"); return; }
+
+    const lbl = name => f.querySelector(`input[name="${name}"]:checked + label`)?.textContent || "-";
+    const crew = CREW.find(p => p.id === crewSel.value);
+    const text = [
+      `[C WORKS LABEL 제작 상담 신청]`, ``,
+      `종목: ${lbl("cat")}`, `담당 디렉터: ${crew ? crew.name : "자동 배정"}`,
+      `수량: 스타일당 ${f.qty.value}장 × ${f.styles.value}스타일`, `예산: ${lbl("budget")}`, ``,
+      `고객 유형: ${lbl("type")}`, `브랜드: ${f.brand.value}`, `희망 출고일: ${f.due.value}`, `진행 단계: ${lbl("stage")}`, `유입 경로: ${lbl("src")}`,
+      `내용:`, f.memo.value || "-", ``,
+      `담당자: ${f.name.value}`, `연락처: ${f.phone.value}`, `이메일: ${f.email.value || "-"}`,
+    ].join("\n");
+    const mail = `mailto:${C.email}?subject=${encodeURIComponent(`[상담신청] ${f.brand.value} / ${lbl("cat")} ${f.qty.value}장`)}&body=${encodeURIComponent(text)}`;
+    document.getElementById("summary").textContent = text;
+    document.getElementById("mailBtn").href = mail;
+    f.style.display = "none"; document.getElementById("bar").style.display = "none";
+    document.getElementById("done").style.display = "block";
+    location.href = mail;
+  };
+</script>
+</body>
+</html>

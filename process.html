@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Process — C WORKS LABEL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="process">
+
+<section class="phero">
+  <div class="wrap">
+    <p class="eyebrow fade d1">Process & Schedule</p>
+    <h1 class="display fade d2" style="margin-top:20px;font-size:clamp(44px,7vw,104px)">From first call<br>to final balance.</h1>
+    <p class="lead fade d3" style="margin-top:32px">상담부터 샘플, 계약금, 생산, 검품, 잔금, 납품까지. 모든 단계의 일정과 결제 시점을 계약 전에 문서로 확정합니다.</p>
+  </div>
+</section>
+
+<!-- 단계별 일정 -->
+<section style="padding-top:40px">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">8 Phases</p></div>
+      <h2 class="h2">표준 진행 일정<br><span class="muted" style="font-size:.5em">국내 생산 · 약 8주 기준</span></h2>
+    </div>
+    <div class="rows" id="phases" style="border-top:1px solid var(--line)"></div>
+  </div>
+</section>
+
+<!-- 업계 비교 -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div><p class="eyebrow">Compare</p></div>
+      <h2 class="h2">일반 프로모션과<br>무엇이 다른가.</h2>
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>항목</th><th>국내 프로모션 6곳 (2026.11 조사)</th><th style="color:var(--white)">C WORKS LABEL</th></tr></thead>
+        <tbody id="cmp"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 일정 계산기 -->
+<section>
+  <div class="wrap grid-2">
+    <div>
+      <p class="eyebrow">Schedule Planner</p>
+      <h2 class="h2" style="margin-top:20px">희망 출고일로<br>일정을 역산합니다.</h2>
+      <p class="lead" style="margin-top:24px">종목과 출고일, 예상 제작비를 입력하면 단계별 마감일과 계약금·잔금 금액을 바로 확인할 수 있습니다. 실제 일정은 상담 후 담당 디렉터가 확정합니다.</p>
+      <div class="form" style="margin-top:40px">
+        <div class="f2">
+          <div class="fld"><label>종목</label><select id="cCat"></select></div>
+          <div class="fld"><label>희망 출고일</label><input type="date" id="cDue"></div>
+        </div>
+        <div class="f2">
+          <div class="fld"><label>수량 (총)</label><input type="number" id="cQty" value="300" min="0"></div>
+          <div class="fld"><label>예상 장당 단가 (원)</label><input type="number" id="cUnit" value="25000" min="0" step="1000"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="calc-out" id="out"></div>
+      <p class="warn" id="warn"></p>
+      <div class="btns" style="margin-top:32px"><a class="btn" href="consult.html" id="toConsult">이 일정으로 상담 신청 <span class="arr">→</span></a><span class="js-kakao" data-label="카톡으로 일정 문의"></span></div>
+    </div>
+  </div>
+</section>
+
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+  const C = CW, U = CWU;
+  const DEP = C.pay.deposit / 100;
+
+  const PH = [
+    ["W0", "상담 · 견적", "종목 디렉터 1:1 상담. 레퍼런스·목표 단가 확인 후 항목별 가견적 제시.", `예약금 ${U.won(C.depositFee / 10000)}만원`],
+    ["W1", "기획 · 작업지시서", "도식화, 사이즈 스펙, 원단 스와치·부자재 제안. 작업지시서 확정.", ""],
+    ["W2–3", "샘플 제작", "1차 샘플 제작 후 핏·소재 피드백. 필요 시 2차 수정 샘플.", "샘플비 (계약 시 차감)"],
+    ["W3–4", "샘플 확정 · 계약", "확정 샘플 기준 최종 견적, 단계별 일정표 첨부 계약서 체결.", `계약금 ${C.pay.deposit}%`],
+    ["W4–5", "원단 · 부자재 입고", "원단 발주, 수축·세탁 테스트, 로트 확인 후 재단 준비.", ""],
+    ["W5–7", "생산 · PP 확인", "재단·봉제·가공. 첫 생산분(PP) 확인 후 전량 생산 진행. 단계별 사진 공유.", ""],
+    ["W7–8", "검품 · 포장", "전수 또는 AQL 기준 검품, 실측 리포트 제공. 폴리백·택 작업.", `잔금 ${C.pay.balance}%`],
+    ["W8", "출고 · 사후 관리", "잔금 확인 후 출고. 납품 후 14일 내 불량 수선·환불. 골든 샘플·작지 보관으로 리오더 대응.", ""],
+  ];
+  document.getElementById("phases").innerHTML = PH.map(([w, t, d, p]) =>
+    `<div class="phase rv"><span class="wk">${w}</span><div><p class="h3">${t}</p><p class="muted small" style="margin-top:6px">${d}</p></div>
+     <span class="pay">${p ? `<b>₩</b>${p}` : ""}</span></div>`).join("");
+
+  // 국내 프로모션·생산 대행 6곳 공개 페이지 조사 (2026.11) 기준
+  const CMP = [
+    ["상담 창구", "대부분 카카오톡 채널·견적 폼으로 담당자가 접수 후 연락", "종목별 20년차 현역 디렉터가 직접 상담. 제작 가능한 프로젝트에 한해 영업일 2~3일 내 개별 회신. 전화·방문·화상 미팅"],
+    ["담당자 경력", "업체 경력은 공개하나, 실제 담당자는 대부분 비공개", "담당 디렉터의 실명 경력·현재 담당 브랜드·작업 사진 공개"],
+    ["최소 수량", "1장·20장·50장부터 받는 곳이 많음 (100장 기준은 일부)", `스타일당 ${C.minQty}장 + 총 ${CWU.won(C.minBudget / 10000)}만원 이상 — 소량 문의를 받지 않아 기존 오더 납기 보호`],
+    ["견적", "장당 단가 위주, 원가 공개는 일부 업체만", "원단·부자재·공임·가공·검품 항목별 견적 + 수량 구간별 단가"],
+    ["샘플비", "실비 청구 또는 메인 생산 시 면제 등 업체마다 다름", "샘플비는 메인 생산 계약 시 제작비에서 전액 차감"],
+    ["결제", "비율·시점을 공개한 곳이 거의 없음 (원부자재 선입금·출고 시 공임 등)", `예약금 → 계약금 ${C.pay.deposit}% → 검품 후 잔금 ${C.pay.balance}%로 사이트에 고정 공개`],
+    ["일정", "샘플 3~14일, 메인 2~4주 안내. 생산 일정은 '공장 사정에 따라 유동'", "출고일 역산 일정표를 계약서에 첨부, 단계마다 진행 사진 공유"],
+    ["검품·불량", "2~3차 검품, 불량 시 수선 또는 환불 (기준 기간은 일부만 명시)", "실측 리포트 포함 검품서 제공. 납품 후 14일 내 불량 수선, 불가 시 해당분 환불"],
+    ["리오더", "리오더 대응을 내세우지만 보관 기준은 명시하지 않음", "골든 샘플·작업지시서·원단 로트 정보 보관"],
+  ];
+  document.getElementById("cmp").innerHTML = CMP.map(([k, a, b]) =>
+    `<tr><td>${k}</td><td class="muted">${a}</td><td class="us">${b}</td></tr>`).join("");
+
+  // ---- 일정 계산기 ----
+  const WEEKS = { knit: 8, women: 7, denim: 8, tee: 5, men: 8, global: 12 };
+  // 8주(56일) 기준 출고일로부터의 역산 비율
+  const MILE = [
+    ["상담 · 견적 확정", 56], ["작업지시서 확정", 49], ["샘플 확정 · 계약", 35, "deposit"],
+    ["원단 · 부자재 입고", 24], ["생산 착수 (PP 확인)", 21], ["검품 완료", 5], ["잔금 입금", 3, "balance"], ["출고", 0],
+  ];
+  const $ = id => document.getElementById(id);
+  $("cCat").innerHTML = CATS.map(c => `<option value="${c.id}">${c.ko} (약 ${WEEKS[c.id]}주)</option>`).join("");
+  const d0 = new Date(); d0.setDate(d0.getDate() + 70);
+  $("cDue").value = d0.toISOString().slice(0, 10);
+
+  const fmt = d => `${d.getMonth() + 1}월 ${d.getDate()}일 (${"일월화수목금토"[d.getDay()]})`;
+  function calc() {
+    const cat = $("cCat").value, due = new Date($("cDue").value), w = WEEKS[cat];
+    if (isNaN(due)) return;
+    const total = (+$("cQty").value || 0) * (+$("cUnit").value || 0), scale = w / 8;
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    let late = false;
+    $("out").innerHTML = MILE.map(([t, off, pay]) => {
+      const d = new Date(due); d.setDate(d.getDate() - Math.round(off * scale));
+      if (d < today) late = true;
+      const amt = pay === "deposit" ? total * DEP : pay === "balance" ? total * (1 - DEP) : 0;
+      return `<div class="r ${pay ? "pay" : ""}"><span>${t}${pay ? ` — ${U.won(Math.round(amt))}원` : ""}</span><span class="d">${fmt(d)}</span></div>`;
+    }).join("");
+    const qty = +$("cQty").value || 0;
+    $("warn").textContent = late ? `※ 일부 단계가 이미 지난 날짜입니다. ${CATS.find(c => c.id === cat).ko} 종목은 약 ${w}주가 필요하니 출고일을 늦추거나 상담 시 단축 일정을 협의하세요.`
+      : qty && qty < C.minQty ? `※ 최소 제작 수량은 스타일당 ${C.minQty}장입니다.`
+      : total && total < C.minBudget ? `※ 최소 제작 예산은 ${U.won(C.minBudget / 10000)}만원입니다.` : "";
+    $("toConsult").href = `consult.html?cat=${cat}`;
+  }
+  ["cCat", "cDue", "cQty", "cUnit"].forEach(id => $(id).addEventListener("input", calc));
+  calc(); observeReveal();
+</script>
+</body>
+</html>
