@@ -148,21 +148,21 @@
   </div>
 </section>
 
-<!-- 6-1. 편집숍 · 디자인룸 -->
-<section>
+<!-- 6-1. 편집숍 · 디자인룸 (features 켜진 것만 보임) -->
+<section id="doorsSec">
   <div class="wrap">
     <div class="sec-head rv">
       <div><p class="eyebrow">More than production</p></div>
       <h2 class="h2">제작만이 아닙니다.<br>디렉터의 옷과 디자인을 만나는 두 개의 문.</h2>
     </div>
     <div class="doors rv">
-      <a class="door" href="shop.html">
+      <a class="door" href="shop.html" data-f="shop">
         <p class="eyebrow">Shop · For everyone</p>
         <div><h3 class="h2">The Shop</h3>
           <p>20년차 현역 디렉터들이 자기 이름으로 만든 옷을 한정 수량으로 판매하는 편집숍. 배송·교환·반품은 C WORKS LABEL이 직접 책임집니다.</p></div>
         <span class="go">편집숍 둘러보기 →</span>
       </a>
-      <a class="door" href="design.html">
+      <a class="door" href="design.html" data-f="design">
         <p class="eyebrow">Design Room · Verified businesses only</p>
         <div><h3 class="h2">Design Room</h3>
           <p>디렉터의 디자인을 작업지시서와 함께 구매해 당신 브랜드의 상품으로. 사업자 등록을 확인하고 승인한 프리미엄 거래 업체만 입장할 수 있습니다.</p></div>
@@ -188,6 +188,10 @@
 <script src="common.js"></script>
 <script>
   const C = CW, U = CWU;
+  // 단계별 오픈: 꺼 둔 판매 기능은 메인에서 숨김
+  document.querySelectorAll(".door[data-f]").forEach(d => { if (!(U.F || {})[d.dataset.f]) d.remove(); });
+  if (!document.querySelector(".door")) document.getElementById("doorsSec").remove();
+  else if (document.querySelectorAll(".door").length === 1) document.querySelector(".doors").style.gridTemplateColumns = "1fr";
   document.querySelectorAll(".js-tel").forEach(a => a.href = U.tel);
   if (C.heroImage) { const h = document.getElementById("heroImg"); h.classList.remove("ph"); h.style.backgroundImage = `url("${C.heroImage}")`; }
 
@@ -199,7 +203,7 @@
 
   document.getElementById("crewPreview").innerHTML = CREW.slice(0, 3).map(p => {
     const cat = CATS.find(c => c.id === p.cat);
-    return `<a class="crew" href="crew.html#${p.id}">
+    return `<a class="crew" href="director.html?id=${p.id}">
       <div class="ph-img" ${p.photo ? `style="background-image:url('${p.photo}')"` : ""}>Portrait</div>
       <p class="role">${cat.en}</p><p class="nm">${p.name}</p><p class="yr">업력 ${p.years}년 · ${cat.ko} 전문</p></a>`;
   }).join("");

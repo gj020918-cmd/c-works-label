@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Director — C WORKS LABEL</title>
+<meta name="description" content="C WORKS LABEL 디렉터 프로필 — 경력, 현재 담당 브랜드, 작업, 자기소개.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="crew">
+
+<main id="page"></main>
+
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+  // 주소: director.html?id=c01  (CREW의 id)
+  const id = new URLSearchParams(location.search).get("id");
+  const i = CREW.findIndex(x => x.id === id);
+  if (i < 0) location.replace("crew.html");
+  const p = CREW[i] || {}, c = CATS.find(x => x.id === p.cat) || {}, U = CWU;
+  const has = (arr, any) => Array.isArray(arr) && (any ? arr.some(Boolean) : arr.length > 0);
+  const bg = src => src ? `style="background-image:url('${src}')"` : "";
+  const prev = CREW[(i - 1 + CREW.length) % CREW.length], next = CREW[(i + 1) % CREW.length];
+  const works = (p.works || []).map(w => typeof w === "string" ? { src: w, cap: "" } : w).filter(w => w.src);
+  const bio = has(p.bio, true) ? p.bio.filter(Boolean) : [p.intro || `${c.ko} 전문 디렉터의 자기소개를 준비하고 있습니다.`];
+  // 판매 기능이 꺼져 있으면(1단계) 상품·디자인 칸을 숨김
+  const items = (U.F || {}).shop ? (window.SHOP || []).filter(s => s.crew === p.id) : [];
+  const designs = (U.F || {}).design ? (window.DESIGNS || []).filter(d => d.crew === p.id) : [];
+  const consult = `consult.html?cat=${p.cat}&crew=${p.id}`;
+  document.title = `${p.name} — ${c.en || ""} Director · C WORKS LABEL`;
+
+  document.getElementById("page").innerHTML = `
+  <!-- 1. 첫 화면: 사진 + 이름 + 한 마디 -->
+  <section class="d-hero">
+    <div class="wrap d-hero-in">
+      <div class="ph-img d-portrait fade d1" ${bg(p.photo)}>Portrait</div>
+      <div class="d-head">
+        <p class="eyebrow fade d1"><a href="crew.html">The Crew</a> / ${c.en || ""} Director</p>
+        <h1 class="display fade d2" style="font-size:clamp(48px,7vw,112px);margin-top:18px">${p.name}</h1>
+        ${p.en ? `<p class="muted fade d2" style="margin-top:6px;letter-spacing:.14em">${p.en}</p>` : ""}
+        ${p.quote ? `<p class="d-quote fade d3">“${p.quote}”</p>` : ""}
+        <dl class="kv fade d3">
+          ${p.years ? `<dt>업력</dt><dd>${p.years}년</dd>` : ""}
+          <dt>전문 종목</dt><dd>${c.ko || ""}</dd>
+          ${p.nowRole ? `<dt>현재</dt><dd>${p.nowRole} <span class="muted small">· 현역</span></dd>` : ""}
+        </dl>
+        <div class="btns fade d3">
+          <a class="btn" href="${consult}">${p.name}에게 상담 신청 <span class="arr">→</span></a>
+          <a class="btn ghost" href="${U.tel}">전화 연결</a>
+          ${U.kakaoBtn("카톡 상담")}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 숫자 띠 -->
+  <div class="band">
+    <div class="grid-3">
+      <div class="cell"><p class="num">${p.years || "–"}<em>yrs</em></p><p class="muted small" style="margin-top:12px">${c.ko || ""} 한 종목에서 보낸 시간</p></div>
+      <div class="cell"><p class="num">${has(p.brands) ? p.brands.length : "–"}<em>brands</em></p><p class="muted small" style="margin-top:12px">지금 담당하고 있는 브랜드</p></div>
+      <div class="cell"><p class="num">${has(p.history) ? p.history.length : "–"}<em>steps</em></p><p class="muted small" style="margin-top:12px">걸어온 경력 단계</p></div>
+    </div>
+  </div>
+
+  <!-- 3. 자기소개 -->
+  <section>
+    <div class="wrap grid-2">
+      <div class="rv"><p class="eyebrow">About</p><h2 class="h2" style="margin-top:20px">${p.name}의 이야기.</h2></div>
+      <div class="rv mf-body">${bio.map(t => `<p>${t}</p>`).join("")}</div>
+    </div>
+  </section>
+
+  <!-- 4. 전문 분야 + 일하는 방식 -->
+  ${(has(p.skills) || has(p.workStyle)) ? `
+  <section>
+    <div class="wrap grid-2">
+      <div class="rv">
+        <p class="eyebrow">Expertise</p>
+        <h2 class="h2" style="margin-top:20px">잘하는 것.</h2>
+        ${has(p.skills) ? `<div class="tags" style="margin-top:28px">${p.skills.map(s => `<span class="tag">${s}</span>`).join("")}</div>` : ""}
+      </div>
+      ${has(p.workStyle) ? `<div class="rows rv">${p.workStyle.map((t, n) => `<div class="row"><span class="n">0${n + 1}</span><span class="h3" style="grid-column:span 2">${t}</span></div>`).join("")}</div>` : ""}
+    </div>
+  </section>` : ""}
+
+  <!-- 5. 현재 담당 브랜드 + 경력 -->
+  <section>
+    <div class="wrap grid-2">
+      <div class="rv">
+        <p class="eyebrow">Now</p>
+        <h2 class="h2" style="margin-top:20px">지금도 현장에 있습니다.</h2>
+        ${p.nowRole ? `<p class="lead" style="margin-top:24px">${p.nowRole}로 현역 활동 중입니다.</p>` : ""}
+        ${has(p.brands) ? `<div class="rows" style="margin-top:32px">${p.brands.map((b, n) => `<div class="row d-brand"><span class="n">0${n + 1}</span><span class="h3" style="grid-column:span 2">${b}</span></div>`).join("")}</div>
+          <p class="muted small" style="margin-top:14px">브랜드 이름은 해당 브랜드의 공개 동의를 받은 경우에만 표기합니다.</p>` : ""}
+      </div>
+      ${has(p.history) ? `<div class="rv"><p class="eyebrow">Career</p><ul class="tl d-tl">${p.history.map(([y, t]) => `<li><b>${y}</b>${t}</li>`).join("")}</ul></div>` : ""}
+    </div>
+  </section>
+
+  <!-- 6. 작업 사진 -->
+  <section>
+    <div class="wrap">
+      <div class="sec-head rv"><div><p class="eyebrow">Works</p></div><h2 class="h2">손으로 증명합니다.</h2></div>
+      ${works.length ? `<div class="d-works rv">${works.map(w => `<figure><div class="ph-img" ${bg(w.src)}>Work</div>${w.cap ? `<figcaption>${w.cap}</figcaption>` : ""}</figure>`).join("")}</div>`
+        : `<div class="d-works rv">${[1, 2, 3].map(() => `<figure><div class="ph-img">Work · 사진 준비 중</div></figure>`).join("")}</div>`}
+    </div>
+  </section>
+
+  <!-- 7. 이 디렉터의 상품 · 디자인 -->
+  ${(items.length || designs.length) ? `
+  <section>
+    <div class="wrap">
+      <div class="sec-head rv"><div><p class="eyebrow">From ${p.name}</p></div><h2 class="h2">${p.name}의 옷과 디자인.</h2></div>
+      ${items.length ? `<div class="prod-grid rv">${items.map(s => `
+        <a class="prod ${s.stock ? "" : "sold"}" href="shop.html?d=${p.id}">
+          ${s.stock ? "" : `<span class="badge">Sold out</span>`}
+          <div class="ph-img" ${bg(s.photo)}>Product</div>
+          <p class="by">Shop</p><p class="pn">${s.name}</p>
+          <p><span class="pr">${U.won(s.price)}원</span>${s.stock ? `<span class="left">한정 ${s.stock}장</span>` : ""}</p></a>`).join("")}</div>` : ""}
+      <div class="btns rv" style="margin-top:40px">
+        ${items.length ? `<a class="btn ghost" href="shop.html?d=${p.id}">${p.name}의 관 전체 보기 <span class="arr">→</span></a>` : ""}
+        ${designs.length ? `<a class="btn ghost" href="design.html">Design Room에 디자인 ${designs.length}건 · 사업자 전용 <span class="arr">→</span></a>` : ""}
+      </div>
+    </div>
+  </section>` : ""}
+
+  <!-- 8. 마무리: 상담 + 다른 디렉터 -->
+  <section>
+    <div class="wrap" style="text-align:center">
+      <p class="eyebrow rv">Work with ${p.name}</p>
+      <h2 class="h2 rv" style="margin:20px auto 32px;max-width:20ch">${c.ko || ""} 제작, ${p.name}에게 직접 맡기세요.</h2>
+      <p class="muted small rv">스타일당 ${CW.minQty}장 · 총 ${U.won(CW.minBudget / 10000)}만원 이상 · 대표 1차 상담 후 담당 디렉터가 직접 연락드립니다.</p>
+      <div class="btns rv" style="justify-content:center;margin-top:32px">
+        <a class="btn" href="${consult}">상담 신청 <span class="arr">→</span></a>
+        <a class="btn ghost" href="${U.tel}">전화 ${CW.phone}</a>
+      </div>
+      <div class="d-nav rv">
+        <a href="director.html?id=${prev.id}"><span class="eyebrow">← Previous</span><b>${prev.name}</b></a>
+        <a href="crew.html"><span class="eyebrow">All crew</span><b>크루 전체</b></a>
+        <a href="director.html?id=${next.id}" style="text-align:right"><span class="eyebrow">Next →</span><b>${next.name}</b></a>
+      </div>
+    </div>
+  </section>`;
+
+  observeReveal();
+</script>
+</body>
+</html>

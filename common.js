@@ -8,6 +8,9 @@
   const kakaoBtn = (label, cls = "btn ghost") => C.kakao
     ? `<a class="${cls} kakao-btn" href="${C.kakao}" target="_blank" rel="noopener">${KAKAO_ICON}${label}</a>` : "";
 
+  const F = C.features || {};
+  // 꺼 둔 기능의 페이지로 직접 들어오면 메인으로
+  if ((page === "shop" && !F.shop) || (page === "design" && !F.design)) { location.replace("index.html"); return; }
   const links = [
     ["index.html", "Label", "home"],
     ["crew.html", "Crew", "crew"],
@@ -15,7 +18,7 @@
     ["design.html", "Design Room", "design"],
     ["process.html", "Process", "process"],
     ["consult.html", "Consult", "consult"],
-  ];
+  ].filter(([, , k]) => (k !== "shop" || F.shop) && (k !== "design" || F.design));
 
   const hdr = document.createElement("header");
   hdr.className = "hdr";
@@ -49,7 +52,7 @@
       <div class="ftr-grid">
         <div><b>C Works Label</b>동대문 업력 20년 이상 디자이너들의 프로모션 레이블.<br>스타일당 ${C.minQty}장 이상 · 총 ${won(C.minBudget / 10000)}만원 이상 제작.</div>
         <div><b>Contact</b><a href="${tel}">${C.phone}</a><br><a href="mailto:${C.email}">${C.email}</a>${C.kakao ? `<br><a href="${C.kakao}" target="_blank" rel="noopener">카카오톡 채널</a>` : ""}</div>
-        <div><b>Hours</b>${C.hours}<br><br><b>More</b><a href="shop.html">Shop — 디렉터 편집숍</a><br><a href="design.html">Design Room — 사업자 전용</a></div>
+        <div><b>Hours</b>${C.hours}${(F.shop || F.design) ? `<br><br><b>More</b>${F.shop ? `<a href="shop.html">Shop — 디렉터 편집숍</a><br>` : ""}${F.design ? `<a href="design.html">Design Room — 사업자 전용</a>` : ""}` : ""}</div>
         <div><b>Studio</b>${C.address}</div>
       </div>
       <p class="copy">${C.bizInfo}<br>© ${new Date().getFullYear()} ${C.brand}. All rights reserved.</p>
@@ -77,5 +80,5 @@
   // 페이지 안 <span class="js-kakao" data-label="..."> 자리에 카톡 버튼 채우기
   document.querySelectorAll(".js-kakao").forEach(el => { el.outerHTML = kakaoBtn(el.dataset.label || "카카오톡 상담"); });
 
-  window.CWU = { tel, won, kakaoBtn };
+  window.CWU = { tel, won, kakaoBtn, F };
 })();

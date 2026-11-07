@@ -25,20 +25,14 @@
   </div>
 </section>
 
-<div class="modal" id="modal">
-  <button class="modal-x" id="mx">CLOSE ✕</button>
-  <div class="modal-box" id="mbox"></div>
-</div>
-
 <script src="data.js"></script>
 <script src="common.js"></script>
 <script>
+  // 예전 주소(crew.html#c01)로 들어오면 개인 페이지로 이동
+  if (location.hash && CREW.some(x => "#" + x.id === location.hash)) location.replace("director.html?id=" + location.hash.slice(1));
   const grid = document.getElementById("grid"), filters = document.getElementById("filters");
-  const modal = document.getElementById("modal"), mbox = document.getElementById("mbox");
   const catOf = id => CATS.find(c => c.id === id);
   const bg = src => src ? `style="background-image:url('${src}')"` : "";
-  // 정보가 비어 있으면 해당 칸을 숨김 (되는 대로 채워 넣어도 화면이 깨지지 않게)
-  const has = (arr, anyTruthy) => Array.isArray(arr) && (anyTruthy ? arr.some(Boolean) : arr.length > 0);
   let cur = "all";
 
   filters.innerHTML = [["all", "전체"], ...CATS.map(c => [c.id, c.ko])]
@@ -50,53 +44,20 @@
     render();
   };
 
+  // 카드를 누르면 디렉터 개인 페이지(director.html?id=)로
   function render() {
     grid.innerHTML = CREW.filter(p => cur === "all" || p.cat === cur).map(p => {
       const c = catOf(p.cat);
-      return `<div class="crew rv" data-id="${p.id}">
+      return `<a class="crew rv" href="director.html?id=${p.id}">
         <div class="ph-img" ${bg(p.photo)}>Portrait</div>
         <p class="role">${c.en}</p><p class="nm">${p.name}</p>
-        <p class="yr">${p.years ? `업력 ${p.years}년 · ` : ""}${c.ko} 전문</p></div>`;
+        <p class="yr">${p.years ? `업력 ${p.years}년 · ` : ""}${c.ko} 전문</p>
+        ${p.quote ? `<p class="crew-q">“${p.quote}”</p>` : ""}
+        <span class="crew-go">프로필 보기 →</span></a>`;
     }).join("");
     observeReveal(grid);
   }
-  grid.onclick = e => { const el = e.target.closest(".crew"); if (el) open(el.dataset.id); };
-
-  function open(id) {
-    const p = CREW.find(x => x.id === id); if (!p) return;
-    const c = catOf(p.cat);
-    mbox.innerHTML = `
-      <div class="ph-img" ${bg(p.photo)}>Portrait</div>
-      <div class="modal-body">
-        <p class="eyebrow">${c.en} Director</p>
-        <h2 class="h2" style="margin:10px 0 6px">${p.name}</h2>
-        <p class="muted small">${[p.en, p.years && `업력 ${p.years}년`].filter(Boolean).join(" · ")}</p>
-        <p style="margin-top:24px;color:var(--gray-4)">${p.intro || `${c.ko} 전문 디렉터의 상세 프로필을 준비하고 있습니다. 경력과 작업 사례는 상담 시 직접 안내드립니다.`}</p>
-        ${(has(p.skills) || has(p.brands) || p.nowRole) ? `<dl class="kv">
-          ${p.nowRole ? `<dt>현재</dt><dd>${p.nowRole} <span class="muted small">· 현역</span></dd>` : ""}
-          ${has(p.skills) ? `<dt>전문 분야</dt><dd><div class="tags" style="margin:0">${p.skills.map(s => `<span class="tag">${s}</span>`).join("")}</div></dd>` : ""}
-          ${has(p.brands) ? `<dt>현재 담당 브랜드</dt><dd>${p.brands.join(" · ")}</dd>` : ""}
-        </dl>` : ""}
-        ${has(p.history) ? `<p class="eyebrow" style="margin-top:20px">Career</p>
-        <ul class="tl">${p.history.map(([y, t]) => `<li><b>${y}</b>${t}</li>`).join("")}</ul>` : ""}
-        ${has(p.works, true) ? `<p class="eyebrow" style="margin-top:20px">Works</p>
-        <div class="gallery">${p.works.filter(Boolean).map(w => `<div class="ph-img" ${bg(w)}>Work</div>`).join("")}</div>` : ""}
-        <div class="btns" style="margin-top:32px">
-          <a class="btn" href="consult.html?cat=${p.cat}&crew=${p.id}">${p.name}에게 상담 신청 <span class="arr">→</span></a>
-          <a class="btn ghost" href="${CWU.tel}">전화 연결</a>
-          ${CWU.kakaoBtn("카톡 상담")}
-        </div>
-      </div>`;
-    modal.classList.add("open");
-    history.replaceState(null, "", "#" + id);
-  }
-  const close = () => { modal.classList.remove("open"); history.replaceState(null, "", location.pathname); };
-  document.getElementById("mx").onclick = close;
-  modal.onclick = e => { if (e.target === modal) close(); };
-  addEventListener("keydown", e => { if (e.key === "Escape") close(); });
-
   render();
-  if (location.hash) open(location.hash.slice(1));
 </script>
 </body>
 </html>

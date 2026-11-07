@@ -85,7 +85,7 @@
         <div><p class="eyebrow">${catOf(d.cat).en || ""} · ${d.years ? `업력 ${d.years}년` : ""}</p>
           <p class="serif" style="margin:6px 0 10px">${d.name}의 관</p>
           <p class="muted small" style="max-width:60ch">${d.intro || ""}</p></div>
-        <a class="btn ghost" href="crew.html#${d.id}">프로필 보기 <span class="arr">→</span></a>
+        <a class="btn ghost" href="director.html?id=${d.id}">프로필 보기 <span class="arr">→</span></a>
       </div>`;
     grid.innerHTML = SHOP.filter(s => cur === "all" || s.crew === cur).map(s => `
       <div class="prod rv ${s.stock ? "" : "sold"}" data-id="${s.id}">
@@ -116,7 +116,7 @@
         <p class="serif" style="font-size:26px;color:var(--white);margin-top:18px">${price(s.price)}</p>
         <p style="margin-top:20px;color:var(--gray-4)">${s.story}</p>
         <dl class="kv">
-          <dt>디렉터</dt><dd><a href="crew.html#${d.id}" style="border-bottom:1px solid var(--gray-1)">${d.name}</a> <span class="muted small">· 업력 ${d.years}년 · 현역</span></dd>
+          <dt>디렉터</dt><dd><a href="director.html?id=${d.id}" style="border-bottom:1px solid var(--gray-1)">${d.name}</a> <span class="muted small">· 업력 ${d.years}년 · 현역</span></dd>
           <dt>소재</dt><dd>${s.material}</dd>
           <dt>수량</dt><dd>${s.stock ? `한정 ${s.stock}장 남음` : "매진 — 재생산하지 않습니다"}</dd>
         </dl>
